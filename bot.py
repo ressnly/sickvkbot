@@ -49,7 +49,6 @@ class Bot(Thread):
         self.logger.log_message(adds, msg, "SEND")
 
     def _log_message(self, adds, msg):
-        print("from ", adds, "get: ", msg, " [", time.asctime(), "]")
         self.logger.log_message(adds, msg, "GET")
 
     def run(self):
