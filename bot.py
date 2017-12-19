@@ -70,14 +70,13 @@ class Bot(Thread):
                 last_message = last_message.replace("natural", "roma pidor")
                 last_message = last_message.replace("<", "-->")
                 self._log_message(chat_id, last_message)
-                if last_message[-1:] == "0" or last_message[-1:] == ")":
-                    if last_message[-1:] == ')':
-                        last_message += "0"
-                    else:
-                        last_message += ")"
-                    self._send_message(chat_id, last_message+")")
+                if last_message[-1:] == ')':
+                    last_message += "0)"
+                if last_message[-1:] == '0':
+                    last_message += "))"
                 if last_message[-1:] == ".":
-                    self._send_message(chat_id, "C:")
+                    last_message = "C:"
+                self._send_message(chat_id, last_message)
             time.sleep(5)
         log_controller.close_thread()
         print("Thread is closed")
