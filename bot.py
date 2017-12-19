@@ -13,11 +13,17 @@ class Bot(Thread):
         self.logger = logger.DataLogger("log")
 
     def close_thread(self):
+        """
+        shutdown bot
+        """
         self.active = False
 
     def login(self, login_func, handler_func):
-        # login_func need return: login(str), password(str)
-        # handler_func need return: key(str), remember_device(bool)
+        """
+        :param login_func: function, returning LOGIN(str) and PASSWORD(str)
+        :param handler_func: function, returning KEY(int) and REMEMBER_DEVICE(bool)
+        :return: True if login successfull and False in other cases
+        """
         log, password = login_func()
         self.active = True
         self.vk_session = vk_api.VkApi(
@@ -29,26 +35,22 @@ class Bot(Thread):
         except vk_api.AuthError as error_msg:
             print(error_msg)
             self.active = False
-            return
+            return False
         print("Login is successful")
+        return True
 
     def _send_message(self, adds, msg):
-        self.vk_session.method('messages.send', {'peer_id': adds, 'message': msg})
         try:
-            self.logger.log_message(adds, msg, "SEND")
+            self.vk_session.method('messages.send', {'peer_id': adds, 'message': msg})
         except vk_api.Captcha as e:
             print(e.get_url())
             key = input("input captcha: ")
             e.try_again(key=key)
+        self.logger.log_message(adds, msg, "SEND")
 
     def _log_message(self, adds, msg):
         print("from ", adds, "get: ", msg, " [", time.asctime(), "]")
-        try:
-            self.logger.log_message(adds, msg, "GET")
-        except vk_api.Captcha as e:
-            print(e.get_url())
-            key = input("input captcha: ")
-            e.try_again(key=key)
+        self.logger.log_message(adds, msg, "GET")
 
     def run(self):
         print("Start main loop")

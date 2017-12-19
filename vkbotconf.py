@@ -14,7 +14,8 @@ if __name__ == '__main__':
 
     # bot loop
     vk_bot = bot.Bot()
-    vk_bot.login(auth_login, auth_handler)
+    while not vk_bot.login(auth_login, auth_handler):
+        pass
     vk_bot.start()
     print("For stop bot just input everything")
     while True:

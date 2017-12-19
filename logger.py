@@ -4,11 +4,19 @@ import time
 
 class DataLogger:
     def __init__(self, logs_directory):
+        """
+        :param logs_directory: directory, where store logs
+        """
         self.logs_directory = logs_directory
         self.files = list()
         self.work = True
 
     def log_message(self, adds, msg, event_name):
+        """
+        :param adds: peer_id
+        :param msg: body
+        :param event_name: comment to log
+        """
         print("event[%s] address[%s] message[%s]" % (event_name, adds, msg))
         logfile = None
         for item in self.files:

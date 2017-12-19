@@ -4,6 +4,9 @@ import time
 
 class LogController(Thread):
     def __init__(self, _logger):
+        """
+        :param _logger: logger.DataLogger
+        """
         Thread.__init__(self)
         self.logger = _logger
         self.running = True
